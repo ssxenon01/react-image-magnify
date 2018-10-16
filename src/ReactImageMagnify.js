@@ -29,6 +29,7 @@ import {
     INPUT_TYPE,
     ENLARGED_IMAGE_POSITION
 } from './constants';
+import ProgressiveImage from "react-progressive-image";
 
 class ReactImageMagnify extends React.Component {
 
@@ -328,17 +329,20 @@ class ReactImageMagnify extends React.Component {
                 shouldStopTouchMovePropagation: true,
                 style: getContainerStyle(smallImage, style)
             }}>
-                <img { ...{
-                    src: smallImage.src,
-                    srcSet: smallImage.srcSet,
-                    sizes: smallImage.sizes,
-                    alt: smallImage.alt,
-                    className: imageClassName,
-                    style: getSmallImageStyle(smallImage, imageStyle),
-                    ref: (el) => this.smallImageEl = el,
-                    onLoad: this.onSmallImageLoad,
-                    onError
-                }} />
+                <ProgressiveImage src={smallImage.src} placeholder={smallImage.placeholder}>
+                    {src => <img { ...{
+                        src: src,
+                        srcSet: smallImage.srcSet,
+                        sizes: smallImage.sizes,
+                        alt: smallImage.alt,
+                        className: imageClassName,
+                        style: getSmallImageStyle(smallImage, imageStyle),
+                        ref: (el) => this.smallImageEl = el,
+                        onLoad: this.onSmallImageLoad,
+                        onError
+                    }} />}
+                </ProgressiveImage>
+
                 {isHintEnabled &&
                     <DisplayUntilActive {...{
                         shouldHideAfterFirstActivation: shouldHideHintAfterFirstActivation
